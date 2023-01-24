@@ -47,7 +47,7 @@ export default function OpenOrderTable({
         connection,
         wallet: wallet.adapter as BaseSignerWalletAdapter,
       });
-    } catch (e) {
+    } catch (e: any) {
       notify({
         message: 'Error cancelling order',
         description: e.message,

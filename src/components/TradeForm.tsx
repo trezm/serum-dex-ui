@@ -20,7 +20,7 @@ import {
   roundToDecimal,
 } from '../utils/utils';
 import { BaseSignerWalletAdapter } from '@solana/wallet-adapter-base';
-import { useSendConnection } from '../utils/connection';
+import { useConnection, useSendConnection } from '../utils/connection';
 import FloatingElement from './layout/FloatingElement';
 import { getUnixTs, placeOrder } from '../utils/send';
 import { SwitchChangeEventHandler } from 'antd/es/switch';
@@ -67,9 +67,8 @@ export default function TradeForm({
   const sendConnection = useSendConnection();
   const markPrice = useMarkPrice();
   useFeeDiscountKeys();
-  const {
-    storedFeeDiscountKey: feeDiscountKey,
-  } = useLocallyStoredFeeDiscountKey();
+  const { storedFeeDiscountKey: feeDiscountKey } =
+    useLocallyStoredFeeDiscountKey();
 
   const [postOnly, setPostOnly] = useState(false);
   const [ioc, setIoc] = useState(false);
@@ -122,7 +121,7 @@ export default function TradeForm({
             endTime - startTime
           }`,
         );
-      } catch (e) {
+      } catch (e: any) {
         console.log(`Encountered error when refreshing trading accounts: ${e}`);
       }
     };
@@ -263,7 +262,7 @@ export default function TradeForm({
       refreshCache(tuple('getTokenAccounts', wallet, connected));
       setPrice(undefined);
       onSetBaseSize(undefined);
-    } catch (e) {
+    } catch (e: any) {
       console.warn(e);
       notify({
         message: 'Error placing order',
