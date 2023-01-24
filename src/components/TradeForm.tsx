@@ -20,7 +20,11 @@ import {
   roundToDecimal,
 } from '../utils/utils';
 import { BaseSignerWalletAdapter } from '@solana/wallet-adapter-base';
-import { useConnection, useSendConnection } from '../utils/connection';
+import {
+  useConnection,
+  useConnectionConfig,
+  useSendConnection,
+} from '../utils/connection';
 import FloatingElement from './layout/FloatingElement';
 import { getUnixTs, placeOrder } from '../utils/send';
 import { SwitchChangeEventHandler } from 'antd/es/switch';
@@ -69,6 +73,7 @@ export default function TradeForm({
   useFeeDiscountKeys();
   const { storedFeeDiscountKey: feeDiscountKey } =
     useLocallyStoredFeeDiscountKey();
+  const { priorityFee, computeUnits } = useConnectionConfig();
 
   const [postOnly, setPostOnly] = useState(false);
   const [ioc, setIoc] = useState(false);
@@ -258,6 +263,8 @@ export default function TradeForm({
         baseCurrencyAccount: baseCurrencyAccount?.pubkey,
         quoteCurrencyAccount: quoteCurrencyAccount?.pubkey,
         feeDiscountPubkey: feeDiscountKey,
+        priorityFee,
+        computeUnits,
       });
       refreshCache(tuple('getTokenAccounts', wallet, connected));
       setPrice(undefined);
