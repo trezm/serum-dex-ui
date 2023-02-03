@@ -6,7 +6,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useMarketInfos, useTokenAccounts } from './markets';
 import { settleAllFunds } from './send';
 import { PreferencesContextValues } from './types';
-import { Market } from '@project-serum/serum';
+import { Market } from '@openbook-dex/openbook';
 import { BaseSignerWalletAdapter } from '@solana/wallet-adapter-base';
 
 export const AUTO_SETTLE_DISABLED_OVERRIDE = true;
@@ -24,10 +24,8 @@ export function PreferencesProvider({ children }) {
   const [tokenAccounts] = useTokenAccounts();
   const { connected, wallet } = useWallet();
   const marketInfoList = useMarketInfos();
-  const [
-    currentlyFetchingMarkets,
-    setCurrentlyFetchingMarkets,
-  ] = useState<boolean>(false);
+  const [currentlyFetchingMarkets, setCurrentlyFetchingMarkets] =
+    useState<boolean>(false);
   const [markets, setMarkets] = useState<Map<string, Market>>(new Map());
   const addToMarketsMap = (marketId, market) => {
     setMarkets((prev) => new Map(prev).set(marketId, market));
@@ -50,7 +48,7 @@ export function PreferencesProvider({ children }) {
           tokenAccounts: tokenAccounts || [],
           markets: [...markets.values()],
         });
-      } catch (e) {
+      } catch (e: any) {
         console.log('Error auto settling funds: ' + e.message);
         return;
       }
@@ -83,7 +81,7 @@ export function PreferencesProvider({ children }) {
           );
           addToMarketsMap(marketInfo.address.toString(), market);
           await sleep(1000);
-        } catch (e) {
+        } catch (e: any) {
           console.log('Error fetching market: ' + e.message);
         }
       }

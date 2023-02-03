@@ -68,7 +68,7 @@ export default function WalletBalancesTable({
         wallet: wallet.adapter as BaseSignerWalletAdapter,
         markets: allMarkets.map((marketInfo) => marketInfo.market),
       });
-    } catch (e) {
+    } catch (e: any) {
       notify({
         message: 'Error settling funds',
         description: e.message,

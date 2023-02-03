@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Input, Row, Select, Typography } from 'antd';
 import styled from 'styled-components';
-import { Orderbook } from '@project-serum/serum';
+import { Orderbook } from '@openbook-dex/openbook';
 import {
   getExpectedFillPrice,
   getMarketDetails,
@@ -182,9 +182,8 @@ function ConvertFormSubmit({
   const balances = useBalances();
   const [fromAmount, setFromAmount] = useState<number | undefined>();
   const [toAmount, setToAmount] = useState<number | undefined>();
-  const {
-    storedFeeDiscountKey: feeDiscountKey,
-  } = useLocallyStoredFeeDiscountKey();
+  const { storedFeeDiscountKey: feeDiscountKey } =
+    useLocallyStoredFeeDiscountKey();
 
   const connection = useConnection();
   const sendConnection = useSendConnection();
@@ -225,7 +224,7 @@ function ConvertFormSubmit({
     let side;
     try {
       side = isFromTokenBaseOfMarket(market) ? 'sell' : 'buy';
-    } catch (e) {
+    } catch (e: any) {
       console.warn(e);
       notify({
         message: 'Error placing order',
@@ -288,7 +287,7 @@ function ConvertFormSubmit({
         quoteCurrencyAccount: quoteCurrencyAccount?.pubkey,
         feeDiscountPubkey: feeDiscountKey,
       });
-    } catch (e) {
+    } catch (e: any) {
       console.warn(e);
       notify({
         message: 'Error placing order',
@@ -330,7 +329,7 @@ function ConvertFormSubmit({
       } else {
         return [1, expectedPrice.toFixed(6)];
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log(`Got error ${e}`);
       return [null, null];
     }
