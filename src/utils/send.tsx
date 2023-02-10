@@ -318,6 +318,8 @@ export async function cancelOrder(params: {
   connection: Connection;
   wallet: BaseSignerWalletAdapter;
   order: Order;
+  priorityFee?: number;
+  computeUnits?: number;
 }) {
   return cancelOrders({ ...params, orders: [params.order] });
 }
