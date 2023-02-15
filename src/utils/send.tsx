@@ -42,6 +42,24 @@ import {
   WalletAdapter,
 } from '@solana/wallet-adapter-base';
 
+export const REQUEST_QUEUE_ITEM_SIZE = 88;
+export const EVENT_QUEUE_ITEM_SIZE = 80;
+export const ORDERBOOK_ITEM_SIZE = 72;
+export const QUEUE_HEADER_SIZE = 44;
+export const ORDERBOOK_HEADER_SIZE = 52;
+
+export function calculateRequestQueueSize(requestQueueLength): number {
+  return requestQueueLength * REQUEST_QUEUE_ITEM_SIZE + QUEUE_HEADER_SIZE;
+}
+
+export function calculateOrderbookSize(orderbookLength): number {
+  return orderbookLength * ORDERBOOK_ITEM_SIZE + ORDERBOOK_HEADER_SIZE;
+}
+
+export function calculateEventQueueSize(eventQueueSize): number {
+  return eventQueueSize * EVENT_QUEUE_ITEM_SIZE + QUEUE_HEADER_SIZE;
+}
+
 export async function createTokenAccountTransaction({
   connection,
   wallet,
@@ -512,6 +530,9 @@ export async function listMarket({
   dexProgramId,
   priorityFee = undefined,
   computeUnits = undefined,
+  eventQueueLength = 2978,
+  requestQueueLength = 63,
+  orderbookLength = 909,
 }: {
   connection: Connection;
   wallet: BaseSignerWalletAdapter;
@@ -522,6 +543,9 @@ export async function listMarket({
   dexProgramId: PublicKey;
   priorityFee?: number;
   computeUnits?: number;
+  eventQueueLength?: number;
+  requestQueueLength?: number;
+  orderbookLength?: number;
 }) {
   assert(wallet.publicKey, 'Expected `publicKey` to be non-null');
 
@@ -593,29 +617,37 @@ export async function listMarket({
     SystemProgram.createAccount({
       fromPubkey: wallet.publicKey,
       newAccountPubkey: requestQueue.publicKey,
-      lamports: await connection.getMinimumBalanceForRentExemption(5120 + 12),
-      space: 5120 + 12,
+      lamports: await connection.getMinimumBalanceForRentExemption(
+        calculateRequestQueueSize(requestQueueLength),
+      ),
+      space: calculateRequestQueueSize(requestQueueLength),
       programId: dexProgramId,
     }),
     SystemProgram.createAccount({
       fromPubkey: wallet.publicKey,
       newAccountPubkey: eventQueue.publicKey,
-      lamports: await connection.getMinimumBalanceForRentExemption(262144 + 12),
-      space: 262144 + 12,
+      lamports: await connection.getMinimumBalanceForRentExemption(
+        calculateEventQueueSize(eventQueueLength),
+      ),
+      space: calculateEventQueueSize(eventQueueLength),
       programId: dexProgramId,
     }),
     SystemProgram.createAccount({
       fromPubkey: wallet.publicKey,
       newAccountPubkey: bids.publicKey,
-      lamports: await connection.getMinimumBalanceForRentExemption(65536 + 12),
-      space: 65536 + 12,
+      lamports: await connection.getMinimumBalanceForRentExemption(
+        calculateOrderbookSize(orderbookLength),
+      ),
+      space: calculateOrderbookSize(orderbookLength),
       programId: dexProgramId,
     }),
     SystemProgram.createAccount({
       fromPubkey: wallet.publicKey,
       newAccountPubkey: asks.publicKey,
-      lamports: await connection.getMinimumBalanceForRentExemption(65536 + 12),
-      space: 65536 + 12,
+      lamports: await connection.getMinimumBalanceForRentExemption(
+        calculateOrderbookSize(orderbookLength),
+      ),
+      space: calculateOrderbookSize(orderbookLength),
       programId: dexProgramId,
     }),
     DexInstructions.initializeMarket({
