@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { sleep, useLocalStorageState } from './utils';
 import { useInterval } from './useInterval';
-import { useConnection } from './connection';
+import { useConnection, useConnectionConfig } from './connection';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useMarketInfos, useTokenAccounts } from './markets';
 import { settleAllFunds } from './send';
@@ -31,6 +31,7 @@ export function PreferencesProvider({ children }) {
     setMarkets((prev) => new Map(prev).set(marketId, market));
   };
   const connection = useConnection();
+  const { priorityFee, computeUnits } = useConnectionConfig();
 
   useInterval(() => {
     const autoSettle = async () => {
@@ -47,6 +48,8 @@ export function PreferencesProvider({ children }) {
           wallet: wallet.adapter as BaseSignerWalletAdapter,
           tokenAccounts: tokenAccounts || [],
           markets: [...markets.values()],
+          priorityFee,
+          computeUnits,
         });
       } catch (e: any) {
         console.log('Error auto settling funds: ' + e.message);

@@ -37,14 +37,14 @@ export interface ChartContainerState {}
 export const TVChartContainer = () => {
   // let datafeed = useTvDataFeed();
   const defaultProps: ChartContainerProps = {
-    symbol: 'BTC/USDC',
+    symbol: 'SOL/USDC',
     // @ts-ignore
     interval: '60',
     auto_save_delay: 5,
     theme: 'Dark',
     containerId: 'tv_chart_container',
     // datafeed: datafeed,
-    libraryPath: '/charting_library/',
+    libraryPath: '/',
     chartsStorageApiVersion: '1.1',
     clientId: 'tradingview.com',
     userId: 'public_user_id',

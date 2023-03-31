@@ -8,11 +8,11 @@
     "@craco/craco": "^6",
     "@ledgerhq/hw-transport-webusb": "^5.41.0",
     "@openbook-dex/associated-token": "0.0.4",
-    "@project-serum/awesome-serum": "1.0.1",
-    "@openbook-dex/pool": "0.0.4",
     "@openbook-dex/openbook": "0.0.4",
-    "@project-serum/sol-wallet-adapter": "^0.2.0",
+    "@openbook-dex/pool": "0.0.4",
     "@openbook-dex/tokens": "0.0.4",
+    "@project-serum/awesome-serum": "1.0.1",
+    "@project-serum/sol-wallet-adapter": "^0.2.0",
     "@solana/spl-name-service": "^0.1.2",
     "@solana/spl-token": "^0.1.6",
     "@solana/wallet-adapter-ledger": "^0.9.20",
@@ -35,6 +35,7 @@
     "antd": "^4.6.0",
     "bn.js": "^5.1.3",
     "craco-less": "^1.17.0",
+    "decimal.js": "^10.4.3",
     "immutable-tuple": "^0.4.10",
     "nanoid": "^3.1.22",
     "qrcode.react": "^1.0.0",
@@ -97,19 +98,32 @@
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
     "@babel/plugin-proposal-optional-chaining": "^7.18.9",
     "@babel/plugin-transform-shorthand-properties": "^7.18.6",
+    "@parcel/packager-raw-url": "^2.8.3",
+    "@parcel/transformer-less": "^2.8.3",
+    "@parcel/transformer-webmanifest": "^2.8.3",
     "@solana/wallet-adapter-base": "^0.9.18",
+    "assert": "^2.0.0",
+    "buffer": "^5.7.1",
+    "buffer-layout": "^1.2.0",
     "gh-pages": "^3.1.0",
     "git-format-staged": "^2.1.0",
     "husky": "^4.2.5",
     "lint-staged": ">=10",
+    "parcel": "^2.8.3",
+    "parcel-reporter-static-files-copy": "^1.5.0",
+    "path-browserify": "^1.0.1",
     "prettier": "^2.0.5",
-    "buffer-layout": "^1.2.0"
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.5"
   },
   "lint-staged": {
     "*.{js,jsx,css,md}": "prettier --write"
   },
   "resolutions": {
     "@types/react": "17.0.30"
+  },
+  "staticFiles": {
+    "staticPath": "../charting_library/charting_library"
   },
   "packageManager": "yarn@3.3.1"
 }

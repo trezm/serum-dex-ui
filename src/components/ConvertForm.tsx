@@ -17,7 +17,11 @@ import {
 } from '../utils/markets';
 import { notify } from '../utils/notifications';
 import { useWallet, Wallet } from '@solana/wallet-adapter-react';
-import { useConnection, useSendConnection } from '../utils/connection';
+import {
+  useConnection,
+  useConnectionConfig,
+  useSendConnection,
+} from '../utils/connection';
 import { placeOrder } from '../utils/send';
 import { floorToDecimal, getDecimalCount } from '../utils/utils';
 import FloatingElement from './layout/FloatingElement';
@@ -187,6 +191,7 @@ function ConvertFormSubmit({
 
   const connection = useConnection();
   const sendConnection = useSendConnection();
+  const { priorityFee, computeUnits } = useConnectionConfig();
 
   const [isConverting, setIsConverting] = useState(false);
 
@@ -286,6 +291,8 @@ function ConvertFormSubmit({
         baseCurrencyAccount: baseCurrencyAccount?.pubkey,
         quoteCurrencyAccount: quoteCurrencyAccount?.pubkey,
         feeDiscountPubkey: feeDiscountKey,
+        priorityFee,
+        computeUnits,
       });
     } catch (e: any) {
       console.warn(e);

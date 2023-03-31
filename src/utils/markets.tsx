@@ -208,7 +208,7 @@ const _SLOW_REFRESH_INTERVAL = 5 * 1000;
 const _FAST_REFRESH_INTERVAL = 1000;
 
 export const DEFAULT_MARKET = useMarkets.find(
-  ({ name, deprecated }) => name === 'SRM/USDT' && !deprecated,
+  ({ name, deprecated }) => name === 'SOL/USDC' && !deprecated,
 );
 
 export function getMarketDetails(
@@ -263,7 +263,6 @@ export function MarketProvider({ marketAddress, setMarketAddress, children }) {
   // Replace existing market with a non-deprecated one on first load
   useEffect(() => {
     if (marketInfo && marketInfo.deprecated) {
-      console.log('Switching markets from deprecated', marketInfo);
       if (DEFAULT_MARKET) {
         setMarketAddress(DEFAULT_MARKET.address.toBase58());
       }
