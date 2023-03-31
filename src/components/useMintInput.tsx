@@ -17,6 +17,7 @@ export function useMintInput(
   name,
   label: string | ReactElement,
   tooltip?: string | ReactElement,
+  forceSymbols: string[] = [],
 ): [ReactElement, MintInfo | null] {
   const [address, setAddress] = useState('');
   const [accountInfo, loaded] = useAccountInfo(
@@ -25,20 +26,26 @@ export function useMintInput(
 
   const mintToTickers = useMintToTickers();
   const options = useMemo(() => {
-    return Object.entries(mintToTickers)
-      .filter(
+    let values;
+    if (forceSymbols.length) {
+      values = Object.entries(mintToTickers).filter(([mintAddress, ticker]) =>
+        forceSymbols.includes(ticker),
+      );
+    } else {
+      values = Object.entries(mintToTickers).filter(
         ([mintAddress, ticker]) =>
           mintAddress.includes(address) ||
           ticker.toLowerCase().includes(address.toLowerCase()),
-      )
-      .map(([mintAddress, ticker]) => ({
-        value: mintAddress,
-        label: (
-          <>
-            {ticker} ({mintAddress})
-          </>
-        ),
-      }));
+      );
+    }
+    return values.map(([mintAddress, ticker]) => ({
+      value: mintAddress,
+      label: (
+        <>
+          {ticker} ({mintAddress})
+        </>
+      ),
+    }));
   }, [mintToTickers, address]);
 
   const { validateStatus, hasFeedback, help, mintInfo } = useMemo(() => {
